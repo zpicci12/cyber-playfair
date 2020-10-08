@@ -44,4 +44,28 @@ public class PlayfairEncode {
     }
     return pairs;
   }
+
+  //get the row of a letter in a pair
+  public static int getRow(String letter, String[][] key){
+    for (int i = 0; i < key.length; i++){
+      for (int j = 0; j < key[0].length; j++){
+        if (letter.equals(key[i][j])){
+          return i;
+        }
+      }
+    }
+    return -1;
+  }
+
+  //get the column of a letter in a pair
+  public static int getColumn(String letter, String[][] key){
+    for (int i = 0; i < key.length; i++){
+      for (int j = 0; j < key[0].length; j++){
+        if (letter.equals(key[i][j])){
+          return j;
+        }
+      }
+    }
+    return -1;
+  }
 }
