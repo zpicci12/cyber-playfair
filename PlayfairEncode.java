@@ -68,4 +68,15 @@ public class PlayfairEncode {
     }
     return -1;
   }
+
+  public static String regularEncode(String pair, String[][] key){
+    String letter0 = pair.substring(0, 1);
+    String letter1 = pair.substring(1);
+    int row0 = getRow(letter0, key);
+    int column0 = getColumn(letter0, key);
+    int row1 = getRow(letter1, key);
+    int column1 = getColumn(letter1, key);
+    String encoded = key[row0][column1] + key[row1][column0];
+    return encoded;
+  }
 }
