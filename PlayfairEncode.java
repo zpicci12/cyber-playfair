@@ -4,7 +4,6 @@ public class PlayfairEncode {
     String keyText = args[1]; //the key letters for encoding
     String [][] key = makeKey(keyText); //store key letters in a 5x5 array
     String[] pairs = makePairs(text); //insert x's if needed and return the pairs for encoding
-    System.out.println(verticalEncode("OK", key));
 }
 
   //store key letters in a 5x5 array
@@ -88,8 +87,14 @@ public class PlayfairEncode {
     int column0 = getColumn(letter0, key);
     int row1 = getRow(letter1, key);
     int column1 = getColumn(letter1, key);
-    String encoded = key[row0][column0 + 1] + key[row1][column1 + 1];
-    return encoded;
+    if (column1 == 4){
+      String encoded = key[row0][0] + key[row1][0];
+      return encoded;
+    }
+    else {
+      String encoded = key[row0][column0 + 1] + key[row1][column1 + 1];
+      return encoded;
+    }
   }
 
   public static String verticalEncode(String pair, String[][] key){
@@ -99,7 +104,13 @@ public class PlayfairEncode {
     int column0 = getColumn(letter0, key);
     int row1 = getRow(letter1, key);
     int column1 = getColumn(letter1, key);
-    String encoded = key[row0 + 1][column0] + key[row1 + 1][column1];
-    return encoded;
+    if (row1 == 4){ //letters on bottom row must wrap to top row
+      String encoded = key[0][column0] + key[0][column1];
+      return encoded;
+    }
+    else {
+      String encoded = key[row0 + 1][column0] + key[row1 + 1][column1];
+      return encoded;
+    }
   }
 }
