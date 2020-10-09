@@ -69,25 +69,37 @@ public class PlayfairEncode {
     return -1;
   }
 
-  public static String regularEncode(String pair, String[][] key){
+  //determine which rule the encoding must follow + execute the method for that rule
+  public static String determineEncode(String pair, String[][] key){
     String letter0 = pair.substring(0, 1);
     String letter1 = pair.substring(1);
     int row0 = getRow(letter0, key);
     int column0 = getColumn(letter0, key);
     int row1 = getRow(letter1, key);
     int column1 = getColumn(letter1, key);
+    if (row0 == row1){
+      String encoded = verticalEncode(row0, row1, column0, column1, key);
+      return encoded;
+    }
+    else if (column0 == column1){
+      String encoded = horizontalEncode(row0, row1, column0, column1, key);
+      return encoded;
+    }
+    else {
+      String encoded = regularEncode(row0, row1, column0, column1, key);
+      return encoded;
+    }
+  }
+
+  //encode regular letters (different rows and different colums)
+  public static String regularEncode(int row0, int row1, int column0, int column1, String[][] key){
     String encoded = key[row0][column1] + key[row1][column0];
     return encoded;
   }
 
-  public static String horizontalEncode(String pair, String[][] key){
-    String letter0 = pair.substring(0, 1);
-    String letter1 = pair.substring(1);
-    int row0 = getRow(letter0, key);
-    int column0 = getColumn(letter0, key);
-    int row1 = getRow(letter1, key);
-    int column1 = getColumn(letter1, key);
-    if (column1 == 4){
+  //encode letters in the same column
+  public static String horizontalEncode(int row0, int row1, int column0, int column1, String[][] key){
+    if (column1 == 4){ //letters in rightmost column must wrap to leftmost column
       String encoded = key[row0][0] + key[row1][0];
       return encoded;
     }
@@ -97,13 +109,8 @@ public class PlayfairEncode {
     }
   }
 
-  public static String verticalEncode(String pair, String[][] key){
-    String letter0 = pair.substring(0, 1);
-    String letter1 = pair.substring(1);
-    int row0 = getRow(letter0, key);
-    int column0 = getColumn(letter0, key);
-    int row1 = getRow(letter1, key);
-    int column1 = getColumn(letter1, key);
+  //encode letters in the same row
+  public static String verticalEncode(int row0, int row1, int column0, int column1, String[][] key){
     if (row1 == 4){ //letters on bottom row must wrap to top row
       String encoded = key[0][column0] + key[0][column1];
       return encoded;
