@@ -2,9 +2,14 @@ public class PlayfairEncode {
   public static void main(String[] args){
     String text = args[0].toUpperCase(); //the text to be encoded
     String keyText = args[1]; //the key letters for encoding
+    encode(text, keyText); //run the methods to encode the ciphertext
+  }
+
+  public static void encode(String text, String keyText){
     String [][] key = makeKey(keyText); //store key letters in a 5x5 array
     String[] pairs = makePairs(text); //insert x's if needed and return the pairs for encoding
-}
+    encodePairs(pairs, key);
+  }
 
   //store key letters in a 5x5 array
   public static String[][] makeKey(String keyText){
@@ -43,6 +48,28 @@ public class PlayfairEncode {
       }
     }
     return pairs;
+  }
+
+  public static void encodePairs(String[] pairs, String[][] key){
+    //go through each pair and figure out which encoding it needs ("determineEncode")
+    //add that encoding to a new String [][] encodedPairs
+    //skip null pairs! (find # of pairs that aren't null before going through each pair)
+    int n_pairs = 0;
+    for (int i = 0; i < pairs.length; i++){
+      if (pairs[i] != null){
+        n_pairs++;
+      }
+    }
+    String[] encodedPairs = new String[n_pairs];
+    for (int i = 0; i < n_pairs; i++){
+      String encoded_pair = determineEncode(pairs[i], key);
+      encodedPairs[i] = encoded_pair;
+    }
+
+    for (int i = 0; i < encodedPairs.length; i++){
+      System.out.print(encodedPairs[i]);
+    }
+    System.out.println();
   }
 
   //get the row of a letter in a pair
