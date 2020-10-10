@@ -82,9 +82,24 @@ public class PlayfairDecode {
       decodedPairs[i] = decoded_pair;
     }
 
+    //first guess for decoding (x's included)
+    String decoded = "";
+    System.out.print("1. ");
     for (int i = 0; i < decodedPairs.length; i++){
       System.out.print(decodedPairs[i]);
+      decoded += decodedPairs[i];
     }
+    System.out.println();
+
+    //second guess (removing x's)
+    System.out.print("2. ");
+    for (int i = 0; i < decoded.length(); i++){
+      String letter = decoded.substring(i, i + 1);
+      if (!letter.equals("X")){
+        System.out.print(letter);
+      }
+    }
+
     System.out.println();
   }
 
