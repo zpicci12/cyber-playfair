@@ -1,8 +1,10 @@
 make:
 	@echo To encode: make run ARGS=\"encode ciphertext keytext\"
+	@echo To decode: make run ARGS=\"decode plaintext keytext\"
+	@echo \*\*Note: this algorithm removes the letter X from decoded words and removes the letter Z from decoded words if it is the last letter in the word.
 
-run: PlayfairEncode.class compile
-	java PlayfairEncode $(ARGS)
+run: Playfair.class
+	java Playfair $(ARGS)
 
-compile: PlayfairEncode.java
-	javac PlayfairEncode.java
+compile: Playfair.java
+	javac Playfair.java
