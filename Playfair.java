@@ -48,19 +48,26 @@ public class Playfair {
     int count = 0;
     //go through text in pairs of 2; add x's where needed
     while (n < text.length()){
-      String pair = text.substring(n, n + 2);
-      //if the pair is a double letter, add an x and increment n by 1 to keep the pairs in order
-      if (pair.substring(0, 1).equals(pair.substring(1))){
-        String newPair = pair.substring(0, 1) + 'X';
-        n += 1;
-        pairs[count] = newPair;
-        count++;
+      if (n == text.length() - 1){
+        pairs[count] = text.substring(n) + "Z";
+        break;
       }
-      //else don't change the pair
+
       else {
-      pairs[count] = pair;
-      count++;
-      n += 2;
+        String pair = text.substring(n, n + 2);
+        //if the pair is a double letter, add an x and increment n by 1 to keep the pairs in order
+        if (pair.substring(0, 1).equals(pair.substring(1))){
+          String newPair = pair.substring(0, 1) + 'X';
+          n += 1;
+          pairs[count] = newPair;
+          count++;
+        }
+        //else don't change the pair
+        else {
+        pairs[count] = pair;
+        count++;
+        n += 2;
+        }
       }
     }
     return pairs;
