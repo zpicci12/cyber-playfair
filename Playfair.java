@@ -24,7 +24,7 @@ public class Playfair {
   public static void decode(String text, String keyText){
     String [][] key = makeKey(keyText); //store key letters in a 5x5 array
     String[] pairs = makeDecodePairs(text); //return the pairs for decoding
-    //decodePairs(pairs, key);
+    decodePairs(pairs, key);
   }
 
   //store key letters in a 5x5 array
@@ -93,7 +93,7 @@ public class Playfair {
     }
     String[] encodedPairs = new String[n_pairs];
     for (int i = 0; i < n_pairs; i++){
-      String encoded_pair = determineEncode(pairs[i], key);
+      String encoded_pair = determineRule("encode", pairs[i], key);
       encodedPairs[i] = encoded_pair;
     }
 
@@ -103,7 +103,39 @@ public class Playfair {
     System.out.println();
   }
 
+  public static void decodePairs(String[] pairs, String[][] key){
+    //go through each pair and figure out which encoding it needs ("determineEncode")
+    //add that encoding to a new String [][] encodedPairs
+    //skip null pairs! (find # of pairs that aren't null before going through each pair)
+    int n_pairs = 0;
+    for (int i = 0; i < pairs.length; i++){
+      if (pairs[i] != null){
+        n_pairs++;
+      }
+    }
 
+    String[] decodedPairs = new String[n_pairs];
+
+    for (int i = 0; i < n_pairs; i++){
+      String decoded_pair = determineRule("decode", pairs[i], key);
+      decodedPairs[i] = decoded_pair;
+    }
+
+    //first guess for decoding (x's included)
+    String decoded = "";
+    for (int i = 0; i < decodedPairs.length; i++){
+      decoded += decodedPairs[i];
+    }
+
+    for (int i = 0; i < decoded.length(); i++){
+      String letter = decoded.substring(i, i + 1);
+      if (!letter.equals("X")){
+        System.out.print(letter);
+      }
+    }
+
+    System.out.println();
+  }
 
   //get the row of a letter in a pair
   public static int getRow(String letter, String[][] key){
@@ -130,7 +162,7 @@ public class Playfair {
   }
 
   //determine which rule the encoding must follow + execute the method for that rule
-  public static String determineEncode(String pair, String[][] key){
+  public static String determineRule(String algorithm, String pair, String[][] key){
     String letter0 = pair.substring(0, 1);
     String letter1 = pair.substring(1);
     int row0 = getRow(letter0, key);
@@ -138,16 +170,16 @@ public class Playfair {
     int row1 = getRow(letter1, key);
     int column1 = getColumn(letter1, key);
     if (row0 == row1){
-      String encoded = vertical("encode", row0, row1, column0, column1, key);
-      return encoded;
+      String solved = vertical(algorithm, row0, row1, column0, column1, key);
+      return solved;
     }
     else if (column0 == column1){
-      String encoded = horizontal("encode", row0, row1, column0, column1, key);
-      return encoded;
+      String solved = horizontal(algorithm, row0, row1, column0, column1, key);
+      return solved;
     }
     else {
-      String encoded = regular("encode", row0, row1, column0, column1, key);
-      return encoded;
+      String solved = regular(algorithm, row0, row1, column0, column1, key);
+      return solved;
     }
   }
 
