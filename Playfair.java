@@ -27,7 +27,6 @@ public class Playfair {
     //decodePairs(pairs, key);
   }
 
-
   //store key letters in a 5x5 array
   public static String[][] makeKey(String keyText){
     String [][] key = new String [5][5];
@@ -139,46 +138,76 @@ public class Playfair {
     int row1 = getRow(letter1, key);
     int column1 = getColumn(letter1, key);
     if (row0 == row1){
-      String encoded = verticalEncode(row0, row1, column0, column1, key);
+      String encoded = vertical("encode", row0, row1, column0, column1, key);
       return encoded;
     }
     else if (column0 == column1){
-      String encoded = horizontalEncode(row0, row1, column0, column1, key);
+      String encoded = horizontal("encode", row0, row1, column0, column1, key);
       return encoded;
     }
     else {
-      String encoded = regularEncode(row0, row1, column0, column1, key);
+      String encoded = regular("encode", row0, row1, column0, column1, key);
       return encoded;
     }
   }
 
   //encode regular letters (different rows and different colums)
-  public static String regularEncode(int row0, int row1, int column0, int column1, String[][] key){
-    String encoded = key[row0][column1] + key[row1][column0];
-    return encoded;
-  }
-
-  //encode letters in the same column
-  public static String horizontalEncode(int row0, int row1, int column0, int column1, String[][] key){
-    if (column1 == 4){ //letters in rightmost column must wrap to leftmost column
-      String encoded = key[row0][0] + key[row1][0];
+  public static String regular(String algorithm, int row0, int row1, int column0, int column1, String[][] key){
+    if (algorithm.equals("encode")){
+      String encoded = key[row0][column1] + key[row1][column0];
       return encoded;
     }
     else {
-      String encoded = key[row0][column0 + 1] + key[row1][column1 + 1];
-      return encoded;
+      String decoded = key[row0][column1] + key[row1][column0];
+      return decoded;
+    }
+  }
+
+  //encode letters in the same column
+  public static String horizontal(String algorithm, int row0, int row1, int column0, int column1, String[][] key){
+    if (algorithm.equals("encode")){
+      if (column1 == 4){ //letters in rightmost column must wrap to leftmost column
+        String encoded = key[row0][0] + key[row1][0];
+        return encoded;
+      }
+      else {
+        String encoded = key[row0][column0 + 1] + key[row1][column1 + 1];
+        return encoded;
+      }
+    }
+    else {
+      if (column1 == 0){ //letters in rightmost column must wrap to leftmost column
+        String decoded = key[row0][4] + key[row1][4];
+        return decoded;
+      }
+      else {
+        String decoded = key[row0][column0 - 1] + key[row1][column1 - 1];
+        return decoded;
+      }
     }
   }
 
   //encode letters in the same row
-  public static String verticalEncode(int row0, int row1, int column0, int column1, String[][] key){
-    if (row1 == 4){ //letters on bottom row must wrap to top row
-      String encoded = key[0][column0] + key[0][column1];
-      return encoded;
+  public static String vertical(String algorithm, int row0, int row1, int column0, int column1, String[][] key){
+    if (algorithm.equals("encode")){ //verticalEncode
+      if (row1 == 4){ //letters on bottom row must wrap to top row
+        String encoded = key[0][column0] + key[0][column1];
+        return encoded;
+      }
+      else {
+        String encoded = key[row0 + 1][column0] + key[row1 + 1][column1];
+        return encoded;
+      }
     }
-    else {
-      String encoded = key[row0 + 1][column0] + key[row1 + 1][column1];
-      return encoded;
+    else { //verticalDecode
+      if (row1 == 0){ //letters on top row must wrap to bottom row
+        String decoded = key[4][column0] + key[4][column1];
+        return decoded;
+      }
+      else {
+        String decoded = key[row0 - 1][column0] + key[row1 - 1][column1];
+        return decoded;
+      }
     }
   }
 }
