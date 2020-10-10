@@ -12,7 +12,7 @@ public class PlayfairDecode {
     for (int i = 0; i < pairs.length; i++){
       if (pairs[i] != null){
       determineDecode(pairs[i], key);
-    }
+      }
     }
   }
 
@@ -76,8 +76,8 @@ public class PlayfairDecode {
     int row1 = getRow(letter1, key);
     int column1 = getColumn(letter1, key);
     if (row0 == row1){
-      //String encoded = verticalDecode(row0, row1, column0, column1, key);
-      System.out.println(pair + "needs verticalDecode");
+      String decoded = verticalDecode(row0, row1, column0, column1, key);
+      System.out.println(decoded);
       //return encoded;
     }
     else if (column0 == column1){
@@ -97,6 +97,17 @@ public class PlayfairDecode {
   public static String regularDecode(int row0, int row1, int column0, int column1, String[][] key){
     String decoded = key[row0][column1] + key[row1][column0];
     return decoded;
+  }
+
+  public static String verticalDecode(int row0, int row1, int column0, int column1, String[][] key){
+    if (row1 == 0){ //letters on top row must wrap to bottom row
+      String decoded = key[4][column0] + key[4][column1];
+      return decoded;
+    }
+    else {
+      String decoded = key[row0 - 1][column0] + key[row1 - 1][column1];
+      return decoded;
+    }
   }
 
 
