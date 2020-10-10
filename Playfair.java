@@ -1,13 +1,13 @@
 public class Playfair {
   public static void main(String[] args){
-    String algorithm = args[0];
+    String algorithm = args[0]; //argument for decoding or encoding
     String text = args[1].toUpperCase(); //the text to be encoded
     String keyText = args[2]; //the key letters for encoding
     if (algorithm.equals("encode")){
-        encode(text, keyText); //run the methods to encode the ciphertext
+        encode(text, keyText); //run methods to encode the ciphertext
     }
     else if (algorithm.equals("decode")){
-        decode(text, keyText);
+        decode(text, keyText); //run methode to decode the plaintext
     }
     else {
         System.out.println("You did not choose one of the valid options: encode or decode");
@@ -17,14 +17,14 @@ public class Playfair {
   public static void encode(String text, String keyText){
     String [][] key = makeKey(keyText); //store key letters in a 5x5 array
     String[] pairs = makeEncodePairs(text); //insert x's if needed and return the pairs for encoding
-    encodePairs(pairs, key);
+    encodePairs(pairs, key); //encode each pair and print as string
   }
 
 
   public static void decode(String text, String keyText){
     String [][] key = makeKey(keyText); //store key letters in a 5x5 array
     String[] pairs = makeDecodePairs(text); //return the pairs for decoding
-    decodePairs(pairs, key);
+    decodePairs(pairs, key); //decode each pair and print as string
   }
 
   //store key letters in a 5x5 array
@@ -71,7 +71,7 @@ public class Playfair {
     String [] pairs = new String [text.length()];
     int n = 0;
     int count = 0;
-    //go through text in pairs of 2; add x's where needed
+    //go through text in pairs of 2
     while (n < text.length()){
       String pair = text.substring(n, n + 2);
       pairs[count] = pair;
@@ -81,33 +81,27 @@ public class Playfair {
     return pairs;
   }
 
-  public static void encodePairs(String[] pairs, String[][] key){
-    //go through each pair and figure out which encoding it needs ("determineEncode")
-    //add that encoding to a new String [][] encodedPairs
-    //skip null pairs! (find # of pairs that aren't null before going through each pair)
-    int n_pairs = 0;
+  public static void encodePairs(String[] pairs, String[][] key){ //encode pairs of two letters
+    int n_pairs = 0; //count # of letter pairs
     for (int i = 0; i < pairs.length; i++){
       if (pairs[i] != null){
         n_pairs++;
       }
     }
     String[] encodedPairs = new String[n_pairs];
-    for (int i = 0; i < n_pairs; i++){
+    for (int i = 0; i < n_pairs; i++){ //encode each pair based on which rule it follows (vertical, horizontal or regular)
       String encoded_pair = determineRule("encode", pairs[i], key);
       encodedPairs[i] = encoded_pair;
     }
 
-    for (int i = 0; i < encodedPairs.length; i++){
+    for (int i = 0; i < encodedPairs.length; i++){ //print the encoded pairs
       System.out.print(encodedPairs[i]);
     }
     System.out.println();
   }
 
   public static void decodePairs(String[] pairs, String[][] key){
-    //go through each pair and figure out which encoding it needs ("determineEncode")
-    //add that encoding to a new String [][] encodedPairs
-    //skip null pairs! (find # of pairs that aren't null before going through each pair)
-    int n_pairs = 0;
+    int n_pairs = 0; //count # of letter pairs
     for (int i = 0; i < pairs.length; i++){
       if (pairs[i] != null){
         n_pairs++;
@@ -116,18 +110,18 @@ public class Playfair {
 
     String[] decodedPairs = new String[n_pairs];
 
-    for (int i = 0; i < n_pairs; i++){
+    for (int i = 0; i < n_pairs; i++){ //encode each pair based on which rule it follows (vertical, horizontal or regular)
       String decoded_pair = determineRule("decode", pairs[i], key);
       decodedPairs[i] = decoded_pair;
     }
 
-    //first guess for decoding (x's included)
-    String decoded = "";
+
+    String decoded = ""; //add decoded pairs into a string
     for (int i = 0; i < decodedPairs.length; i++){
       decoded += decodedPairs[i];
     }
 
-    for (int i = 0; i < decoded.length(); i++){
+    for (int i = 0; i < decoded.length(); i++){ //check for X's and remove them; print decoded string
       String letter = decoded.substring(i, i + 1);
       if (!letter.equals("X")){
         System.out.print(letter);
@@ -137,8 +131,7 @@ public class Playfair {
     System.out.println();
   }
 
-  //get the row of a letter in a pair
-  public static int getRow(String letter, String[][] key){
+  public static int getRow(String letter, String[][] key){   //get the row of a letter in a pair
     for (int i = 0; i < key.length; i++){
       for (int j = 0; j < key[0].length; j++){
         if (letter.equals(key[i][j])){
@@ -149,8 +142,7 @@ public class Playfair {
     return -1;
   }
 
-  //get the column of a letter in a pair
-  public static int getColumn(String letter, String[][] key){
+  public static int getColumn(String letter, String[][] key){   //get the column of a letter in a pair
     for (int i = 0; i < key.length; i++){
       for (int j = 0; j < key[0].length; j++){
         if (letter.equals(key[i][j])){
@@ -161,23 +153,22 @@ public class Playfair {
     return -1;
   }
 
-  //determine which rule the encoding must follow + execute the method for that rule
-  public static String determineRule(String algorithm, String pair, String[][] key){
+  public static String determineRule(String algorithm, String pair, String[][] key){ //determine which rule the encoding must follow + execute the method for that rule
     String letter0 = pair.substring(0, 1);
     String letter1 = pair.substring(1);
     int row0 = getRow(letter0, key);
     int column0 = getColumn(letter0, key);
     int row1 = getRow(letter1, key);
     int column1 = getColumn(letter1, key);
-    if (row0 == row1){
+    if (row0 == row1){ //rows are the same; must use vertical rule
       String solved = vertical(algorithm, row0, row1, column0, column1, key);
       return solved;
     }
-    else if (column0 == column1){
+    else if (column0 == column1){ //columns are the same; must use horizontal rule
       String solved = horizontal(algorithm, row0, row1, column0, column1, key);
       return solved;
     }
-    else {
+    else { //different rows + columns; must use regular rule
       String solved = regular(algorithm, row0, row1, column0, column1, key);
       return solved;
     }
@@ -185,11 +176,11 @@ public class Playfair {
 
   //encode regular letters (different rows and different colums)
   public static String regular(String algorithm, int row0, int row1, int column0, int column1, String[][] key){
-    if (algorithm.equals("encode")){
+    if (algorithm.equals("encode")){ //rule for regular encode
       String encoded = key[row0][column1] + key[row1][column0];
       return encoded;
     }
-    else {
+    else { //rule for regular decode
       String decoded = key[row0][column1] + key[row1][column0];
       return decoded;
     }
@@ -197,7 +188,7 @@ public class Playfair {
 
   //encode letters in the same column
   public static String horizontal(String algorithm, int row0, int row1, int column0, int column1, String[][] key){
-    if (algorithm.equals("encode")){
+    if (algorithm.equals("encode")){ //rule for horizontal encode
       if (column1 == 4){ //letters in rightmost column must wrap to leftmost column
         String encoded = key[row0][0] + key[row1][0];
         return encoded;
@@ -207,7 +198,7 @@ public class Playfair {
         return encoded;
       }
     }
-    else {
+    else { //rule for horizontal decode
       if (column1 == 0){ //letters in rightmost column must wrap to leftmost column
         String decoded = key[row0][4] + key[row1][4];
         return decoded;
@@ -221,7 +212,7 @@ public class Playfair {
 
   //encode letters in the same row
   public static String vertical(String algorithm, int row0, int row1, int column0, int column1, String[][] key){
-    if (algorithm.equals("encode")){ //verticalEncode
+    if (algorithm.equals("encode")){ //rule for vertical encode
       if (row1 == 4){ //letters on bottom row must wrap to top row
         String encoded = key[0][column0] + key[0][column1];
         return encoded;
@@ -231,7 +222,7 @@ public class Playfair {
         return encoded;
       }
     }
-    else { //verticalDecode
+    else { //rule for vertical decode
       if (row1 == 0){ //letters on top row must wrap to bottom row
         String decoded = key[4][column0] + key[4][column1];
         return decoded;
