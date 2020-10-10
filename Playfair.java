@@ -4,6 +4,7 @@ public class Playfair {
     String text = args[1].toUpperCase().replaceAll("\\p{Punct}",""); //the text to be encoded
     String keyText = args[2]; //the key letters for encoding
     if (algorithm.equals("encode")){
+        //text = text.replace("J", "I"); //J gets encoded as I 
         encode(text, keyText); //run methods to encode the ciphertext
     }
     else if (algorithm.equals("decode")){
