@@ -32,12 +32,34 @@ public class PlayfairDecode {
     //go through text in pairs of 2; add x's where needed
     while (n < text.length()){
       String pair = text.substring(n, n + 2);
-      //if the pair is a double letter, add an x and increment n by 1 to keep the pairs in order
-      //else don't change the pair
       pairs[count] = pair;
       count++;
       n += 2;
     }
     return pairs;
+  }
+
+  //get the row of a letter in a pair
+  public static int getRow(String letter, String[][] key){
+    for (int i = 0; i < key.length; i++){
+      for (int j = 0; j < key[0].length; j++){
+        if (letter.equals(key[i][j])){
+          return i;
+        }
+      }
+    }
+    return -1;
+  }
+
+  //get the column of a letter in a pair
+  public static int getColumn(String letter, String[][] key){
+    for (int i = 0; i < key.length; i++){
+      for (int j = 0; j < key[0].length; j++){
+        if (letter.equals(key[i][j])){
+          return j;
+        }
+      }
+    }
+    return -1;
   }
 }
