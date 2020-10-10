@@ -9,6 +9,11 @@ public class PlayfairDecode {
   public static void decode(String text, String keyText){
     String [][] key = makeKey(keyText); //store key letters in a 5x5 array
     String[] pairs = makePairs(text); //insert x's if needed and return the pairs for decoding
+    for (int i = 0; i < pairs.length; i++){
+      if (pairs[i] != null){
+      determineDecode(pairs[i], key);
+    }
+    }
   }
 
   public static String[][] makeKey(String keyText){
@@ -62,4 +67,37 @@ public class PlayfairDecode {
     }
     return -1;
   }
+
+  public static void determineDecode(String pair, String[][] key){
+    String letter0 = pair.substring(0, 1);
+    String letter1 = pair.substring(1);
+    int row0 = getRow(letter0, key);
+    int column0 = getColumn(letter0, key);
+    int row1 = getRow(letter1, key);
+    int column1 = getColumn(letter1, key);
+    if (row0 == row1){
+      //String encoded = verticalDecode(row0, row1, column0, column1, key);
+      System.out.println(pair + "needs verticalDecode");
+      //return encoded;
+    }
+    else if (column0 == column1){
+      //String encoded = horizontalDecode(row0, row1, column0, column1, key);
+      System.out.println(pair + "needs horizontalDecode");
+      //return encoded;
+    }
+    else {
+      String decoded = regularDecode(row0, row1, column0, column1, key);
+      System.out.println(decoded);
+      //return encoded;
+    }
+  }
+
+
+  //decode regular letters (different rows and different colums)
+  public static String regularDecode(int row0, int row1, int column0, int column1, String[][] key){
+    String decoded = key[row0][column1] + key[row1][column0];
+    return decoded;
+  }
+
+
 }
