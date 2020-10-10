@@ -9,11 +9,7 @@ public class PlayfairDecode {
   public static void decode(String text, String keyText){
     String [][] key = makeKey(keyText); //store key letters in a 5x5 array
     String[] pairs = makePairs(text); //insert x's if needed and return the pairs for decoding
-    for (int i = 0; i < pairs.length; i++){
-      if (pairs[i] != null){
-      determineDecode(pairs[i], key);
-      }
-    }
+    decodePairs(pairs, key);
   }
 
   public static String[][] makeKey(String keyText){
@@ -68,7 +64,31 @@ public class PlayfairDecode {
     return -1;
   }
 
-  public static void determineDecode(String pair, String[][] key){
+  public static void decodePairs(String[] pairs, String[][] key){
+    //go through each pair and figure out which encoding it needs ("determineEncode")
+    //add that encoding to a new String [][] encodedPairs
+    //skip null pairs! (find # of pairs that aren't null before going through each pair)
+    int n_pairs = 0;
+    for (int i = 0; i < pairs.length; i++){
+      if (pairs[i] != null){
+        n_pairs++;
+      }
+    }
+
+    String[] decodedPairs = new String[n_pairs];
+
+    for (int i = 0; i < n_pairs; i++){
+      String decoded_pair = determineDecode(pairs[i], key);
+      decodedPairs[i] = decoded_pair;
+    }
+
+    for (int i = 0; i < decodedPairs.length; i++){
+      System.out.print(decodedPairs[i]);
+    }
+    System.out.println();
+  }
+
+  public static String determineDecode(String pair, String[][] key){
     String letter0 = pair.substring(0, 1);
     String letter1 = pair.substring(1);
     int row0 = getRow(letter0, key);
@@ -77,18 +97,15 @@ public class PlayfairDecode {
     int column1 = getColumn(letter1, key);
     if (row0 == row1){
       String decoded = verticalDecode(row0, row1, column0, column1, key);
-      System.out.println(decoded);
-      //return encoded;
+      return decoded;
     }
     else if (column0 == column1){
       String decoded = horizontalDecode(row0, row1, column0, column1, key);
-      System.out.println(decoded);
-      //return encoded;
+      return decoded;
     }
     else {
       String decoded = regularDecode(row0, row1, column0, column1, key);
-      System.out.println(decoded);
-      //return encoded;
+      return decoded;
     }
   }
 
