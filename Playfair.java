@@ -130,8 +130,15 @@ public class Playfair {
 
     for (int i = 0; i < decoded.length(); i++){ //check for X's and remove them; print decoded string
       String letter = decoded.substring(i, i + 1);
-      if (!letter.equals("X")){
-        System.out.print(letter);
+      if (i == decoded.length() - 1){
+        if (!letter.equals("Z")){
+          System.out.print(letter);
+        }
+      }
+      else {
+        if (!letter.equals("X")){
+          System.out.print(letter);
+        }
       }
     }
 
