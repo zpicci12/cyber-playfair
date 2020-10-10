@@ -8,7 +8,7 @@ public class PlayfairDecode {
 
   public static void decode(String text, String keyText){
     String [][] key = makeKey(keyText); //store key letters in a 5x5 array
-    //String[] pairs = makePairs(text); //insert x's if needed and return the pairs for decoding
+    String[] pairs = makePairs(text); //insert x's if needed and return the pairs for decoding
   }
 
   public static String[][] makeKey(String keyText){
@@ -24,4 +24,20 @@ public class PlayfairDecode {
     return key;
   }
 
+  //make the two-letter pairs used to encode the text; return as an array
+  public static String[] makePairs(String text){
+    String [] pairs = new String [text.length()];
+    int n = 0;
+    int count = 0;
+    //go through text in pairs of 2; add x's where needed
+    while (n < text.length()){
+      String pair = text.substring(n, n + 2);
+      //if the pair is a double letter, add an x and increment n by 1 to keep the pairs in order
+      //else don't change the pair
+      pairs[count] = pair;
+      count++;
+      n += 2;
+    }
+    return pairs;
+  }
 }
