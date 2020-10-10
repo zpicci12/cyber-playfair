@@ -81,8 +81,8 @@ public class PlayfairDecode {
       //return encoded;
     }
     else if (column0 == column1){
-      //String encoded = horizontalDecode(row0, row1, column0, column1, key);
-      System.out.println(pair + "needs horizontalDecode");
+      String decoded = horizontalDecode(row0, row1, column0, column1, key);
+      System.out.println(decoded);
       //return encoded;
     }
     else {
@@ -106,6 +106,18 @@ public class PlayfairDecode {
     }
     else {
       String decoded = key[row0 - 1][column0] + key[row1 - 1][column1];
+      return decoded;
+    }
+  }
+
+  //encode letters in the same column
+  public static String horizontalDecode(int row0, int row1, int column0, int column1, String[][] key){
+    if (column1 == 0){ //letters in rightmost column must wrap to leftmost column
+      String decoded = key[row0][4] + key[row1][4];
+      return decoded;
+    }
+    else {
+      String decoded = key[row0][column0 - 1] + key[row1][column1 - 1];
       return decoded;
     }
   }
