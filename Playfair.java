@@ -16,15 +16,17 @@ public class Playfair {
 
   public static void encode(String text, String keyText){
     String [][] key = makeKey(keyText); //store key letters in a 5x5 array
-    String[] pairs = makePairs(text); //insert x's if needed and return the pairs for encoding
+    String[] pairs = makeEncodePairs(text); //insert x's if needed and return the pairs for encoding
     encodePairs(pairs, key);
   }
 
+
   public static void decode(String text, String keyText){
     String [][] key = makeKey(keyText); //store key letters in a 5x5 array
-    String[] pairs = makePairs(text); //return the pairs for decoding
+    String[] pairs = makeDecodePairs(text); //return the pairs for decoding
     //decodePairs(pairs, key);
   }
+
 
   //store key letters in a 5x5 array
   public static String[][] makeKey(String keyText){
@@ -41,7 +43,7 @@ public class Playfair {
   }
 
   //make the two-letter pairs used to encode the text; return as an array
-  public static String[] makePairs(String text){
+  public static String[] makeEncodePairs(String text){
     String [] pairs = new String [text.length()]; //extra indexes for when x's are added
     int n = 0;
     int count = 0;
@@ -61,6 +63,21 @@ public class Playfair {
       count++;
       n += 2;
       }
+    }
+    return pairs;
+  }
+
+  //make the two-letter pairs used to decode the text; return as an array
+  public static String[] makeDecodePairs(String text){
+    String [] pairs = new String [text.length()];
+    int n = 0;
+    int count = 0;
+    //go through text in pairs of 2; add x's where needed
+    while (n < text.length()){
+      String pair = text.substring(n, n + 2);
+      pairs[count] = pair;
+      count++;
+      n += 2;
     }
     return pairs;
   }
@@ -86,6 +103,8 @@ public class Playfair {
     }
     System.out.println();
   }
+
+
 
   //get the row of a letter in a pair
   public static int getRow(String letter, String[][] key){

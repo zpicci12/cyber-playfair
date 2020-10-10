@@ -25,7 +25,7 @@ public class PlayfairDecode {
     return key;
   }
 
-  //make the two-letter pairs used to encode the text; return as an array
+  //make the two-letter pairs used to decode the text; return as an array
   public static String[] makePairs(String text){
     String [] pairs = new String [text.length()];
     int n = 0;
