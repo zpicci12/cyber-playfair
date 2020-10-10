@@ -1,4 +1,4 @@
-public class PlayfairEncode {
+public class Playfair {
   public static void main(String[] args){
     String algorithm = args[0];
     String text = args[1].toUpperCase(); //the text to be encoded
