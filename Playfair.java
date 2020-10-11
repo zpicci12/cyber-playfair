@@ -1,3 +1,11 @@
+/* Zoe Piccirillo
+   Cybersecurity Pd. 5
+   Playfair Cipher
+   compile: make compile
+   encode: make run ARGS="encode ciphertext keytext"
+   decode: make run ARGS="decode plaintext keytext"
+*/
+
 public class Playfair {
   public static void main(String[] args){
     String algorithm = args[0]; //argument for decoding or encoding
